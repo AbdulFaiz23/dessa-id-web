@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import { MapPin, Maximize, Filter, Sprout, Map as MapIcon, List, X, Search } from 'lucide-react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
@@ -54,7 +54,7 @@ const AREA_RANGES = [
 
 const DOC_TYPES = ['Semua', 'SHM', 'SHGB', 'AJB', 'Girik'];
 
-export default function JelajahiPage() {
+function JelajahiContent() {
   const searchParams = useSearchParams();
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
@@ -363,5 +363,19 @@ export default function JelajahiPage() {
         </button>
       </div>
     </div>
+  );
+}
+
+export default function JelajahiPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-screen items-center justify-center bg-slate-50">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
+        </div>
+      }
+    >
+      <JelajahiContent />
+    </Suspense>
   );
 }
